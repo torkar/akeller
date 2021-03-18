@@ -1,30 +1,100 @@
 ---
 title: "Replication package"
 author: "Anne Keller and Richard Torkar"
-date: "3/15/2021"
+date: "First version: 2021-03-18. Current version: `r Sys.time()`."
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r setup2, include=FALSE}
+library("openxlsx")
+library("brms")
+library("here") # make sure Rmd and Rproj root is the same
 ```
 
-## Including Plots
+# Introduction
 
-You can also embed plots, for example:
+This 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+# Data
+
+```{r}
+d <- read.xlsx(here("data/SurveyData.xlsx"), colNames = TRUE)
+d <- d[complete.cases(d), ]
+d <- d[d$Gender!=3,]
+d$Age_s <- scale(d$Age)
+nrow(d)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Descriptive analysis
+
+```{r}
+table(d$Gender)
+```
+
+```{r}
+summary(d$Age)
+```
+
+# Analysis
+
+```{r}
+m_c <- brm(
+  O_Q8_1_5L ~ Age_s + Gender,
+  family = cumulative(),
+  data = d
+)
+
+m_ac <- brm(
+  O_Q8_1_5L ~ Age_s + Gender,
+  family = acat(),
+  data = d
+)
+
+m_sr <- brm(
+  O_Q8_1_5L ~ Age_s + Gender,
+  family = sratio(),
+  data = d
+)
+
+loo(m_c, m_ac, m_sr)
+```
+
+The above model comparison shows that there is no significant difference between the three models. This leaves us the option to pick a family we are comfortable working with. Since the \textsf{Cumulative} family has solid mathematical foundation we pick that one for out Likert scale outcomes.
+
+```{r}
+m0 <- brm(
+  O_Q8_1_5L ~ 1,
+  family = cumulative(),
+  data = d
+)
+
+m1 <- brm(
+  O_Q8_1_5L ~ 1 + Age_s,
+  family = cumulative(),
+  data = d
+)
+
+m2 <- brm(
+  O_Q8_1_5L ~ 1 + Age_s + Gender,
+  family = cumulative(),
+  data = d
+)
+
+m3 <- brm(
+  O_Q8_1_5L ~ 1 + Age_s + Gender + P_Q3_1_1_2,
+  family = cumulative(),
+  data = d
+)
+
+
+```
+
+# Results
