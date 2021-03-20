@@ -20,7 +20,7 @@ library("here") # make sure Rmd and Rproj root is the same
 
 # Introduction
 
-This 
+This project is a part of a master thesis in software engineering. 
 
 
 # Data
@@ -42,6 +42,7 @@ table(d$Gender)
 ```{r}
 summary(d$Age)
 ```
+
 
 # Analysis
 
@@ -93,6 +94,12 @@ m3 <- brm(
   family = cumulative(),
   data = d
 )
+
+##m4 <- brm(
+  ##Main.resp. ~ 1 + Active dev. + Days.a.week + Hours.a.day,
+  ##family = cumulative(),
+  ##data = d
+##)
 
 
 ```
