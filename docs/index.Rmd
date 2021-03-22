@@ -44,6 +44,9 @@ table(d$Gender)
 summary(d$Age)
 ```
 
+```{r}
+table(d$ActiveDev)
+```
 
 # Analysis
 
@@ -74,23 +77,23 @@ The above model comparison shows that there is no significant difference between
 ```{r}
 d$NrOfSub <- d$NrOfSub + 1
 
-m0 <- brm(
-  O_Q8_1_5L ~ 1,
-  family = cumulative(),
-  data = d
-)
+#m0 <- brm(
+#  O_Q8_1_5L ~ 1,
+#  family = cumulative(),
+#  data = d
+#)
 
-m1 <- brm(
-  O_Q8_1_5L ~ 1 + Age_s,
-  family = cumulative(),
-  data = d
-)
+#m1 <- brm(
+#  O_Q8_1_5L ~ 1 + Age_s,
+#  family = cumulative(),
+#  data = d
+#)
 
-m2 <- brm(
-  O_Q8_1_5L ~ 1 + Age_s + Gender,
-  family = cumulative(),
-  data = d
-)
+#m2 <- brm(
+#  O_Q8_1_5L ~ 1 + Age_s + Gender,
+#  family = cumulative(),
+#  data = d
+#)
 
 
 p <- get_prior(Concern ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(DaysAWeek),
@@ -100,6 +103,7 @@ p <- get_prior(Concern ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(DaysAWeek),
 p$prior[1] <- "normal(0,1)"
 p$prior[c(11,12)] <- "dirichlet(2)"
 
+# Outcome - Concern
 m3 <- brm(
   Concern ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(DaysAWeek),
   family = cumulative(),
@@ -108,11 +112,450 @@ m3 <- brm(
   data = d
 )
 
+
+# Outcome - Trust_Family
+
+p <- get_prior(Trust_Family ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(14,15,16,17)] <- "dirichlet(2)"
+
+m4 <- brm(
+  Trust_Family ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+#Outcome - Trust_Scientist
+#Gender, significant
+
+p <- get_prior(Trust_Scientist ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+
+m5 <- brm(
+  Trust_Scientist ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Trust_Government
+
+p <- get_prior(Trust_Government ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+
+m6 <- brm(
+  Trust_Government ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Trust_EnergySupp
+# Age
+
+p <- get_prior(Trust_EnergySupp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+
+m7 <- brm(
+  Trust_EnergySupp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Trust_Environmental
+# Age and gender significant
+
+p <- get_prior(Trust_Environmental ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+
+m8 <- brm(
+  Trust_Environmental ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Trust_Application
+# Gender
+
+p <- get_prior(Trust_Application ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+
+m9 <- brm(
+  Trust_Application ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Trust_Media
+# Gender
+
+p <- get_prior(Trust_Media ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+
+m10 <- brm(
+  Trust_Media ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+#Outcome - Trust_Internet
+
+p <- get_prior(Trust_Internet ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+
+m11 <- brm(
+  Trust_Internet ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - GiveUp
+
+p <- get_prior(Trust_GiveUp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m12 <- brm(
+  Trust_GiveUp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Act_WalkCycle
+
+p <- get_prior(Act_WalkCycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m13 <- brm(
+  Act_WalkCycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Act_TurnOffLights
+
+p <- get_prior(Act_TurnOffLights ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m14 <- brm(
+  Act_TurnOffLights ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Act_Recycle
+# Age and gender
+
+p <- get_prior(Act_Recycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m15 <- brm(
+  Act_Recycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Act_Veggie
+# Gender
+
+p <- get_prior(Act_Veggie ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m16 <- brm(
+  Act_Veggie ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Act_Computer
+# Significant Age
+
+p <- get_prior(Act_Computer ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m17 <- brm(
+  Act_Computer ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Act_Showers
+# Significant Age, NrOfSubs
+
+p <- get_prior(Act_Showers ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m18 <- brm(
+  Act_Showers ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Act_SecondHand
+# Gender
+
+p <- get_prior(Act_SecondHand ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m19 <- brm(
+  Act_SecondHand ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - MainResp
+
+p <- get_prior(MainResp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+
+m20 <- brm(
+  MainResp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Motivate_Notif
+# Significant Gender
+
+p <- get_prior(Motivate_Notif ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
+
+m21 <- brm(
+  Motivate_Notif ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Motivate_Information
+# Gender, HoursADay
+
+p <- get_prior(Motivate_Information ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
+
+m22 <- brm(
+  Motivate_Information ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Motivate_SetGoals
+# HoursADay 
+
+p <- get_prior(Motivate_SetGoals ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
+
+m23 <- brm(
+  Motivate_SetGoals ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Motivate_Nothing
+# DaysAWeek, HoursADay
+
+p <- get_prior(Motivate_Nothing ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
+
+m24 <- brm(
+  Motivate_Nothing ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Motivate_LoggingUse
+# Gender, HoursADay
+
+p <- get_prior(Motivate_LoggingUse ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
+
+m25 <- brm(
+  Motivate_LoggingUse ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Motivate_Blocking
+# 
+
+p <- get_prior(Motivate_Blocking ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
+
+m26 <- brm(
+  Motivate_Blocking ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Motivate_Impact
+# Age
+
+p <- get_prior(Motivate_Impact ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
+
+m27 <- brm(
+  Motivate_Impact ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+# Outcome - Motivate_Suggestions
+# Gender
+
+p <- get_prior(Motivate_Suggestions ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,1)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
+
+m28 <- brm(
+  Motivate_Suggestions ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+#Plots
+
 pp_check(m3, type="bars", nsamples = 100)
+pp_check(m4, type="bars", nsamples = 100)
+pp_check(m5, type="bars", nsamples = 100)
+pp_check(m6, type="bars", nsamples = 100)
+pp_check(m12, type="bars", nsamples = 100)
 
 mcmc_areas(m3, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m4, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m5, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m12, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m13, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m18, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m19, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m20, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m24, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m25, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m27, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
 
 conditional_effects(m3)
+conditional_effects(m4)
+conditional_effects(m5)
+conditional_effects(m6)
+conditional_effects(m9)
 
 # p <- get_prior(mvbind(Concern,Trust_Family) ~ 1 + Age_s + Gender + mo(NrOfSub) + (1 | c | ID),
 #   family = cumulative(),
