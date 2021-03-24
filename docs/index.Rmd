@@ -36,6 +36,7 @@ nrow(d)
 
 ## Descriptive analysis
 
+# 1 = female/transfemale, 2 = male/transmale
 ```{r}
 table(d$Gender)
 ```
@@ -45,7 +46,33 @@ summary(d$Age)
 ```
 
 ```{r}
+summary(d$NrOfSub)
+```
+
+```{r}
+table(d$NrOfSub)
+```
+
+# 1 = TV, 2 = Computer, 3 = Smartphone, 4 = Tablet, 5 = Other
+```{r}
+table(d$Device)
+```
+
+# 1 = none, 2 = 1 device, 3 = 2-3 devices, 4 = More than 4 devices
+# Remove option 5
+```{r}
 table(d$ActiveDev)
+```
+
+# 1 = 0 days a week, 2 = 1-2 days a week, 3 = 3-4 days a week, 4 = 5-6 days a week
+# 5 = Every day of the week
+```{r}
+table(d$DaysAWeek)
+```
+
+# 1 = 0 hours per day, 2 = Less than 1 hour, 3 = 1-2 hours, 4 = 3-4 hours, 5 = 5-6 hours, 6 = More than 7 hours per day
+```{r}
+table(d$HoursADay)
 ```
 
 # Analysis
