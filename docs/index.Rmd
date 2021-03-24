@@ -127,15 +127,15 @@ d$NrOfSub <- d$NrOfSub + 1
 # PP check, seem to estimate quite well and the variance does not seem to large
 # Looking at mcmc_areas the above is confirmed, also ActiveDev seem to have a negative # effect and DaysAWeek, Device and Age seem to have a positive effect
 
-p <- get_prior(Concern ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Concern ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(14,15,16,17,18)] <- "dirichlet(2)"
+p$prior[c(14,15,16,17)] <- "dirichlet(2)"
 
 m3 <- brm(
-  Concern ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Concern ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   # sample_prior = "only",
@@ -144,24 +144,24 @@ m3 <- brm(
 
 pp_check(m3, type="bars", nsamples = 100)
 
-mcmc_areas(m3, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m3, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m3)
 
 # Outcome - Trust_Family
 # No predictor seem to be significant
 # pp check of the model looks good, check using different priors but made no difference
-# NThe only predictor having any effect on the outcome is the device which have negative effect
+# The only predictor having any effect on the outcome is the device which have negative effect
 
-p <- get_prior(Trust_Family ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_Family ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(14,15,16,17,18)] <- "dirichlet(2)"
+p$prior[c(14,15,16,17)] <- "dirichlet(2)"
 
 m4 <- brm(
-  Trust_Family ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_Family ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -169,7 +169,7 @@ m4 <- brm(
 
 pp_check(m4, type="bars", nsamples = 100)
 
-mcmc_areas(m4, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m4, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m4)
 
@@ -177,15 +177,15 @@ conditional_effects(m4)
 # The gender seem to be significant in a negative direction concerning whether you trust a scientist or not
 # ActiveDev as well as age does also seem to have a negative effect on the trust of scientist in relation to environmental information, Device has a positive impact
 
-p <- get_prior(Trust_Scientist ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_Scientist ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(15,16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
 
 m5 <- brm(
-  Trust_Scientist ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_Scientist ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -193,24 +193,23 @@ m5 <- brm(
 
 pp_check(m5, type="bars", nsamples = 100)
 
-mcmc_areas(m5, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m5, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m5)
 
 # Outcome - Trust_Government
 # Gender as well as ActiveDev seem to be significant, negative
 # HoursADay looks to have a slightly negative impact whereas NrOfSub does have a slightly positive effect, neither significant
-# Age seem to have a slight negative impact 
 
-p <- get_prior(Trust_Government ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_Government ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(15,16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
 
 m6 <- brm(
-  Trust_Government ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_Government ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -218,7 +217,7 @@ m6 <- brm(
 
 pp_check(m6, type="bars", nsamples = 100)
 
-mcmc_areas(m6, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m6, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m6)
 
@@ -227,15 +226,15 @@ conditional_effects(m6)
 # pp check looks good
 # Gender and DaysAWeek have a negative impact and NrOfSub do have a positive impact
 
-p <- get_prior(Trust_EnergySupp ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_EnergySupp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(15,16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
 
 m7 <- brm(
-  Trust_EnergySupp ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_EnergySupp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -243,7 +242,7 @@ m7 <- brm(
 
 pp_check(m7, type="bars", nsamples = 100)
 
-mcmc_areas(m7, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m7, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m7)
 
@@ -251,15 +250,15 @@ conditional_effects(m7)
 # Age and gender are significant, negative impact
 # ActiveDev does seem to have a slight negative effect
 
-p <- get_prior(Trust_Environmental ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_Environmental ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(15,16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
 
 m8 <- brm(
-  Trust_Environmental ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_Environmental ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -267,7 +266,7 @@ m8 <- brm(
 
 pp_check(m8, type="bars", nsamples = 100)
 
-mcmc_areas(m8, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m8, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m8)
 
@@ -276,15 +275,15 @@ conditional_effects(m8)
 # The pp check seem to be better with "normal(0,0.5)"
 # Age as well as DaysAWeek seem to have a negative effect
 
-p <- get_prior(Trust_Application ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_Application ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,0.5)"
-p$prior[c(15,16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
 
 m9 <- brm(
-  Trust_Application ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_Application ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -292,7 +291,7 @@ m9 <- brm(
 
 pp_check(m9, type="bars", nsamples = 100)
 
-mcmc_areas(m9, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m9, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m9)
 
@@ -300,15 +299,15 @@ conditional_effects(m9)
 # Gender is significant, negative
 # Both Age, NrOfSub as well as Device have a negative effect
 
-p <- get_prior(Trust_Media ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_Media ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(15,16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
 
 m10 <- brm(
-  Trust_Media ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_Media ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -316,7 +315,7 @@ m10 <- brm(
 
 pp_check(m10, type="bars", nsamples = 100)
 
-mcmc_areas(m10, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m10, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m10)
 
@@ -326,15 +325,15 @@ conditional_effects(m10)
 # Age, Gender, Device, ActiveDev, DaysAWeek has all negative impact on the outcome
 # NrOfSub has slight negative effect
 
-p <- get_prior(Trust_Internet ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_Internet ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,0.5)"
-p$prior[c(15,16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
 
 m11 <- brm(
-  Trust_Internet ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_Internet ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -342,25 +341,25 @@ m11 <- brm(
 
 pp_check(m11, type="bars", nsamples = 100)
 
-mcmc_areas(m11, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m11, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m11)
 
 # Outcome - GiveUp
 # Age is a significant predictor, negative
 # pp check better with updated priors
-# NrOfSub, ActiveDev as well as DaysAWeek seem to have a negative effect on the outcome whereas Gender as well as HoursADay seem to hae a positive effect on the outcome, neither of the predictors are significant
+# NrOfSub, ActiveDev as well as DaysAWeek seem to have a negative effect on the outcome whereas Gender, Device as well as HoursADay seem to hae a positive effect on the outcome, neither of the predictors are significant
 # All predictors has some effect
 
-p <- get_prior(Trust_GiveUp ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Trust_GiveUp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,0.5)"
-p$prior[c(16,17,18,19,20)] <- "dirichlet(2)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
 
 m12 <- brm(
-  Trust_GiveUp ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Trust_GiveUp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -368,23 +367,23 @@ m12 <- brm(
 
 pp_check(m12, type="bars", nsamples = 100)
 
-mcmc_areas(m12, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m12, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m12)
 
 # Outcome - Act_WalkCycle
 # Neither of the predictors are significant
-# Age, Gender, Device, ActiveDev and HoursADay have a positive impact on the outcome, NrOfSubs have a negative impact on the outcome
+# Age, Gender, ActiveDev and HoursADay have a positive impact on the outcome, NrOfSubs have a negative impact on the outcome
 
-p <- get_prior(Act_WalkCycle ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Act_WalkCycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19,20)] <- "dirichlet(2)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
 
 m13 <- brm(
-  Act_WalkCycle ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Act_WalkCycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -392,7 +391,7 @@ m13 <- brm(
 
 pp_check(m13, type="bars", nsamples = 100)
 
-mcmc_areas(m13, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m13, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m13)
 
@@ -400,15 +399,15 @@ conditional_effects(m13)
 # Outcome - Act_TurnOffLights
 # Age, NrOfSub, ActiveDev and HoursADay have a negative impact on the outcome but are not significant
 
-p <- get_prior(Act_TurnOffLights ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Act_TurnOffLights ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19,20)] <- "dirichlet(2)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
 
 m14 <- brm(
-  Act_TurnOffLights ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Act_TurnOffLights ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -416,7 +415,7 @@ m14 <- brm(
 
 pp_check(m14, type="bars", nsamples = 100)
 
-mcmc_areas(m14, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m14, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m14)
 
@@ -425,15 +424,15 @@ conditional_effects(m14)
 # ActiveDev has a positive impact, but not significant
 # NrOfSub has a slight negative impact
 
-p <- get_prior(Act_Recycle ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Act_Recycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19,20)] <- "dirichlet(2)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
 
 m15 <- brm(
-  Act_Recycle ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Act_Recycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -441,7 +440,7 @@ m15 <- brm(
 
 pp_check(m15, type="bars", nsamples = 100)
 
-mcmc_areas(m15, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m15, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m15)
 
@@ -450,15 +449,15 @@ conditional_effects(m15)
 # Age, ActiveDev, DaysAWeek has all positive impact on the outcome, but are not significant
 # Device has a negative impact on the outcome
 
-p <- get_prior(Act_Veggie ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Act_Veggie ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19,20)] <- "dirichlet(2)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
 
 m16 <- brm(
-  Act_Veggie ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Act_Veggie ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -466,7 +465,7 @@ m16 <- brm(
 
 pp_check(m16, type="bars", nsamples = 100)
 
-mcmc_areas(m16, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m16, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m16)
 
@@ -474,15 +473,15 @@ conditional_effects(m16)
 # Age has a significant negative effect on the outcome and NrOfSub has a significant positve effect on the outcome
 # Gender, Device and ActiveDev has a negative effect and HoursADay has a positive effect, neither of them significant
 
-p <- get_prior(Act_Computer ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Act_Computer ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19,20)] <- "dirichlet(2)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
 
 m17 <- brm(
-  Act_Computer ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Act_Computer ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -490,7 +489,7 @@ m17 <- brm(
 
 pp_check(m17, type="bars", nsamples = 100)
 
-mcmc_areas(m17, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m17, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m17)
 
@@ -500,15 +499,15 @@ conditional_effects(m17)
 # After running pp check the priors were adjusted
 # DaysAWeek, Device has a positive effect on the outcome, HoursADay has negative impact on the outcome
 
-p <- get_prior(Act_Showers ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Act_Showers ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,0.5)"
-p$prior[c(16,17,18,19,20)] <- "dirichlet(2)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
 
 m18 <- brm(
-  Act_Showers ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Act_Showers ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -516,7 +515,7 @@ m18 <- brm(
 
 pp_check(m18, type="bars", nsamples = 100)
 
-mcmc_areas(m18, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m18, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m18)
 
@@ -524,15 +523,15 @@ conditional_effects(m18)
 # Gender is significant, positive impact
 # NrOfSub and ActiveDev has a positive impact, DaysAWeek and Device has a slight negative impact
 
-p <- get_prior(Act_SecondHand ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Act_SecondHand ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19,20)] <- "dirichlet(2)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
 
 m19 <- brm(
-  Act_SecondHand ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Act_SecondHand ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -540,22 +539,22 @@ m19 <- brm(
 
 pp_check(m19, type="bars", nsamples = 100)
 
-mcmc_areas(m19, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m19, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m19)
 
 # Outcome - MainResp
 # Age, NrOfSub and DaysAWeek does all have a negative impact on the outcome and ActiveDev and HoursADay have a positive impact on the outcome
 
-p <- get_prior(MainResp ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(MainResp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(15,16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(15,16,17,18)] <- "dirichlet(2)"
 
 m20 <- brm(
-  MainResp ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  MainResp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -563,7 +562,7 @@ m20 <- brm(
 
 pp_check(m20, type="bars", nsamples = 100)
 
-mcmc_areas(m20, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m20, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m20)
 
@@ -571,15 +570,15 @@ conditional_effects(m20)
 # Significant Gender, negative
 # Age, ActiveDev and HoursADay does all have a negative impact on the outcome
 
-p <- get_prior(Motivate_Notif ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Motivate_Notif ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(17,18,19,20,21)] <- "dirichlet(2)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
 
 m21 <- brm(
-  Motivate_Notif ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Motivate_Notif ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -587,24 +586,24 @@ m21 <- brm(
 
 pp_check(m21, type="bars", nsamples = 100)
 
-mcmc_areas(m21, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m21, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m21)
 
 # Outcome - Motivate_Information
 # Gender, HoursADay are both significant negatively
 # Age, NrOfSubs, ActiveDev does all have negative impact on the outcome
-# DaysAWeek does have slight impact on the outcome
+# DaysAWeek does have slight positive impact on the outcome
 
-p <- get_prior(Motivate_Information ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Motivate_Information ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(17,18,19,20,21)] <- "dirichlet(2)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
 
 m22 <- brm(
-  Motivate_Information ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Motivate_Information ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -612,7 +611,7 @@ m22 <- brm(
 
 pp_check(m22, type="bars", nsamples = 100)
 
-mcmc_areas(m22, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m22, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m22)
 
@@ -620,15 +619,15 @@ conditional_effects(m22)
 # HoursADay has a negative impact on the outcome and are significant
 # Gender has a negative impact on the outcome
 
-p <- get_prior(Motivate_SetGoals ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Motivate_SetGoals ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(17,18,19,20,21)] <- "dirichlet(2)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
 
 m23 <- brm(
-  Motivate_SetGoals ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Motivate_SetGoals ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -636,7 +635,7 @@ m23 <- brm(
 
 pp_check(m23, type="bars", nsamples = 100)
 
-mcmc_areas(m23, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m23, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m23)
 
@@ -644,15 +643,15 @@ conditional_effects(m23)
 # DaysAWeek has a negative an significant impact, HoursADay has a positive and significant impact
 # ActiveDev and Gender has a positive effect on the outcome, Device has a negative impact on the outcome
 
-p <- get_prior(Motivate_Nothing ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Motivate_Nothing ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(17,18,19,20,21)] <- "dirichlet(2)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
 
 m24 <- brm(
-  Motivate_Nothing ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Motivate_Nothing ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -660,7 +659,7 @@ m24 <- brm(
 
 pp_check(m24, type="bars", nsamples = 100)
 
-mcmc_areas(m24, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m24, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m24)
 
@@ -668,15 +667,15 @@ conditional_effects(m24)
 # Gender and HoursADay is significant and affects the outcome negatively
 # ActiveDev affects the outcome negatively, Age, NrOfSub and Device affects the outcome negatively
 
-p <- get_prior(Motivate_LoggingUse ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Motivate_LoggingUse ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(17,18,19,20,21)] <- "dirichlet(2)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
 
 m25 <- brm(
-  Motivate_LoggingUse ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Motivate_LoggingUse ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -684,7 +683,7 @@ m25 <- brm(
 
 pp_check(m25, type="bars", nsamples = 100)
 
-mcmc_areas(m25, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m25, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m25)
 
@@ -692,15 +691,15 @@ conditional_effects(m25)
 # Age, Gender, ActiveDev, DaysAWeek, HoursADay all have negative impact on the model, but not significant
 # Device has a positive impact on the model, not significant
 
-p <- get_prior(Motivate_Blocking ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Motivate_Blocking ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(17,18,19,20,21)] <- "dirichlet(2)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
 
 m26 <- brm(
-  Motivate_Blocking ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Motivate_Blocking ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -708,7 +707,7 @@ m26 <- brm(
 
 pp_check(m26, type="bars", nsamples = 100)
 
-mcmc_areas(m26, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m26, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m26)
 
@@ -717,15 +716,15 @@ conditional_effects(m26)
 # Gender, NrOfSub, ActiveDev does all impact the outcome negatively
 # Device does impact the outcome positively
 
-p <- get_prior(Motivate_Impact ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Motivate_Impact ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(17,18,19,20,21)] <- "dirichlet(2)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
 
 m27 <- brm(
-  Motivate_Impact ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Motivate_Impact ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -733,7 +732,7 @@ m27 <- brm(
 
 pp_check(m27, type="bars", nsamples = 100)
 
-mcmc_areas(m27, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m27, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m27)
 
@@ -741,15 +740,15 @@ conditional_effects(m27)
 # Gender is significant and negative
 # NrOfSub, ActiveDev has negative impact on the outcome, Device has positive impact on the outcome
 
-p <- get_prior(Motivate_Suggestions ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+p <- get_prior(Motivate_Suggestions ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(17,18,19,20,21)] <- "dirichlet(2)"
+p$prior[c(17,18,19,20)] <- "dirichlet(2)"
 
 m28 <- brm(
-  Motivate_Suggestions ~ 1 + Age_s + Gender + mo(NrOfSub) + mo(Device) + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  Motivate_Suggestions ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
   family = cumulative(),
   prior = p,
   data = d
@@ -757,7 +756,7 @@ m28 <- brm(
 
 pp_check(m28, type="bars", nsamples = 100)
 
-mcmc_areas(m28, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^bsp"))
+mcmc_areas(m28, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
 conditional_effects(m28)
 
