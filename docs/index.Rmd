@@ -395,6 +395,30 @@ mcmc_areas(m13, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^
 
 conditional_effects(m13)
 
+# Outcome - Act_PublicTransport
+# Adjusted priors
+# Age and gender are significant, positive impact
+# Device and HoursADay have a negative impact on the outcome, ActiveDev have a postive impact, neither are significant
+
+p <- get_prior(Act_PublicTransport ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  data = d)
+
+p$prior[1] <- "normal(0,0.5)"
+p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+
+m29 <- brm(
+  Act_PublicTransport ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+  family = cumulative(),
+  prior = p,
+  data = d
+)
+
+pp_check(m29, type="bars", nsamples = 100)
+
+mcmc_areas(m29, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
+
+conditional_effects(m29)
 
 # Outcome - Act_TurnOffLights
 # Age, NrOfSub, ActiveDev and HoursADay have a negative impact on the outcome but are not significant
