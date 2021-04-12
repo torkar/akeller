@@ -350,21 +350,21 @@ mcmc_areas(m11, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^
 conditional_effects(m11)
 
 # Outcome - GiveUp
-# Age is a significant predictor, negative
-# pp check better with updated priors
-# NrOfSub, ActiveDev as well as DaysAWeek seem to have a negative effect on the outcome whereas Gender, Device as well as HoursADay seem to hae a positive effect on the outcome, neither of the predictors are significant
-# All predictors has some effect
+# The most 
+# Intercept 3, 4 are both significant
+# Intercept 3: Age is significant
+# Intercept 4: NrOfSub and HoursADay
 
-p <- get_prior(Trust_GiveUp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+p <- get_prior(Trust_GiveUp ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   data = d)
 
-p$prior[1] <- "normal(0,0.5)"
-p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+p$prior[1] <- "normal(0,1)"
+p$prior[c(2)] <- "student_t(3, 3, 2.5)"
 
 m12 <- brm(
-  Trust_GiveUp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+  Trust_GiveUp ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   prior = p,
   data = d
 )
@@ -373,18 +373,21 @@ pp_check(m12, type="bars", nsamples = 100)
 
 mcmc_areas(m12, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
-conditional_effects(m12)
+conditional_effects(m12, categorical = TRUE)
 
 # Outcome - Act_WalkCycle
-# Days a week is significant negatively
+# Intercept 2, 3 and 7
+# Intercept 2: DaysAWeek
+# Intercept 3: Age, DaysAWeek
+# Intercept 7: Age, DaysAWeek
 
 p <- get_prior(Act_WalkCycle ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
   family = categorical(),
   data = d)
 
-p <- get_prior(Act_WalkCycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = multinomial(),
-  data = d)
+# p <- get_prior(Act_WalkCycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
+#  family = multinomial(),
+#  data = d)
 
 p$prior[1] <- "normal(0,1)"
 p$prior[c(2)] <- "student_t(3, 3, 2.5)"
@@ -403,12 +406,12 @@ m13 <- brm(
   data = d
 )
 
-m30 <- brm(
-  Act_WalkCycle ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek +   HoursADay,
-  family = multinomial(),
-  prior = p,
-  data = d
-)
+# m30 <- brm(
+#  Act_WalkCycle ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek +   HoursADay,
+#  family = multinomial(),
+#  prior = p,
+#  data = d
+# )
 
 pp_check(m13, type="bars", nsamples = 100)
 
@@ -419,7 +422,10 @@ mcmc_areas(m13, prob = 0.5, prob_outer = 0.95)
 conditional_effects(m13, categorical = TRUE)
 
 # Outcome - Act_PublicTransport
-# Age, Gender, Device are all significant, age positively, the others negatively
+# Intercept 2, 3, 7 significant
+# Intercept 2: DaysAWeek
+# Intercept 3: Age, DaysAWeek
+# Intercept 7: Age, DaysAWeek
 
 p <- get_prior(Act_PublicTransport ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
   family = categorical(),
@@ -444,7 +450,9 @@ mcmc_areas(m29, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^
 conditional_effects(m29, categorical = TRUE)
 
 # Outcome - Act_TurnOffLights
-# Age, Gender as well as hours per day are significantsummar
+# Intercept 2, 4
+# Intercept 2: Age, Gender, HoursADay
+# Intercept 4: Age 
 
 p <- get_prior(Act_TurnOffLights ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
   family = categorical(),
@@ -469,20 +477,19 @@ mcmc_areas(m14, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^
 conditional_effects(m14)
 
 # Outcome - Act_Recycle
-# Age has negative effect and gender has postive effect, both are significant factors
-# ActiveDev has a positive impact, but not significant
-# NrOfSub has a slight negative impact
+# Intercept: 2
+# Intercept 2: None of the predictors are significant
 
-p <- get_prior(Act_Recycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+p <- get_prior(Act_Recycle ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(2)] <- "student_t(3, 3, 2.5)"
 
 m15 <- brm(
-  Act_Recycle ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+  Act_Recycle ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   prior = p,
   data = d
 )
@@ -494,20 +501,18 @@ mcmc_areas(m15, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^
 conditional_effects(m15)
 
 # Outcome - Act_Veggie
-# Gender has a positive impact on the outcome, significant
-# Age, ActiveDev, DaysAWeek has all positive impact on the outcome, but are not significant
-# Device has a negative impact on the outcome
+# Intercept: None are significant
 
-p <- get_prior(Act_Veggie ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+p <- get_prior(Act_Veggie ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(2)] <- "student_t(3, 3, 2.5)"
 
 m16 <- brm(
-  Act_Veggie ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+  Act_Veggie ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   prior = p,
   data = d
 )
@@ -516,22 +521,22 @@ pp_check(m16, type="bars", nsamples = 100)
 
 mcmc_areas(m16, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
-conditional_effects(m16)
+conditional_effects(m16, categorical = TRUE)
 
 # Outcome - Act_Computer
-# Age has a significant negative effect on the outcome and NrOfSub has a significant positve effect on the outcome
-# Gender, Device and ActiveDev has a negative effect and HoursADay has a positive effect, neither of them significant
+# Intercept: 7
+# Intercept 7: Gender, NrOfSub significant
 
-p <- get_prior(Act_Computer ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+p <- get_prior(Act_Computer ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(2)] <- "student_t(3, 3, 2.5)"
 
 m17 <- brm(
-  Act_Computer ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+  Act_Computer ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   prior = p,
   data = d
 )
@@ -544,20 +549,18 @@ conditional_effects(m17)
 
 
 # Outcome - Act_Showers
-# Age is significant negatively, NrOfSubs is significant positively
-# After running pp check the priors were adjusted
-# DaysAWeek, Device has a positive effect on the outcome, HoursADay has negative impact on the outcome
+# Intercept: None are significant
 
-p <- get_prior(Act_Showers ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+p <- get_prior(Act_Showers ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   data = d)
 
-p$prior[1] <- "normal(0,0.5)"
-p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+p$prior[1] <- "normal(0,1)"
+p$prior[c(2)] <- "student_t(3, 3, 2.5)"
 
 m18 <- brm(
-  Act_Showers ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+  Act_Showers ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   prior = p,
   data = d
 )
@@ -569,19 +572,19 @@ mcmc_areas(m18, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^
 conditional_effects(m18)
 
 # Outcome - Act_SecondHand
-# Gender is significant, positive impact
-# NrOfSub and ActiveDev has a positive impact, DaysAWeek and Device has a slight negative impact
+# Intercept: 2
+# Intercept 2: Gender, NrOfSub
 
-p <- get_prior(Act_SecondHand ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+p <- get_prior(Act_SecondHand ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(16,17,18,19)] <- "dirichlet(2)"
+p$prior[c(2)] <- "student_t(3, 3, 2.5)"
 
 m19 <- brm(
-  Act_SecondHand ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+  Act_SecondHand ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   prior = p,
   data = d
 )
@@ -593,18 +596,21 @@ mcmc_areas(m19, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^
 conditional_effects(m19)
 
 # Outcome - MainResp
-# Age, NrOfSub and DaysAWeek does all have a negative impact on the outcome and ActiveDev and HoursADay have a positive impact on the outcome
+# Intercept: 2, 3, 4
+# Intercept 2: None of the predictors are significant
+# Intercept 3: None are significant
+# Intercept 4: None are significant
 
-p <- get_prior(MainResp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+p <- get_prior(MainResp ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
-p$prior[c(15,16,17,18)] <- "dirichlet(2)"
+p$prior[c(2)] <- "student_t(3, 3, 2.5)"
 
 m20 <- brm(
-  MainResp ~ 1 + Age_s + Gender + mo(NrOfSub) + Device + mo(ActiveDev) + mo(DaysAWeek) + mo(HoursADay),
-  family = cumulative(),
+  MainResp ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
+  family = categorical(),
   prior = p,
   data = d
 )
