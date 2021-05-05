@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/347961632.svg)](https://zenodo.org/badge/latestdoi/347961632)
+
 # Replication package
 
 This is a replication package for a software engineering project on sustainability and user behavior.
