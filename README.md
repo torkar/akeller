@@ -8,4 +8,6 @@ In `docs/` you will find the scripts to reproduce the quantiative analysis. It's
 
 In `data/` you will find the dataset used in the analysis.
 
+The analysis is also published here: https://torkar.github.io/akeller/
+
 If you have questions please do not hesitate to contact [Anne Keller](mailto:annekel@student.chalmers.se?subject=[GitHub]%20Replication%20Pkg%20akeller) or [Richard Torkar](mailto:torkarr@chalmers.se?subject=[GitHub]%20Replication%20Pkg%20akeller).
