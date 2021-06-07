@@ -46,7 +46,51 @@ summary(d$Age)
 ```
 
 ```{r}
+plot(density(d$Age))
+```
+
+```{r}
 summary(d$NrOfSub)
+```
+
+```{r}
+plot(density(d$NrOfSub))
+```
+
+```{r}
+hist(d$NrOfSub)
+```
+
+```{r}
+plot(density(d$Device))
+```
+
+```{r}
+hist(d$Device)
+```
+
+```{r}
+plot(density(d$ActiveDev))
+```
+
+```{r}
+hist(d$ActiveDev)
+```
+
+```{r}
+plot(density(d$DaysAWeek))
+```
+
+```{r}
+hist(d$DaysAWeek)
+```
+
+```{r}
+plot(density(d$HoursADay))
+```
+
+```{r}
+hist(d$HoursADay)
 ```
 
 ```{r}
@@ -422,10 +466,10 @@ mcmc_areas(m13, prob = 0.5, prob_outer = 0.95)
 conditional_effects(m13, categorical = TRUE)
 
 # Outcome - Act_PublicTransport
-# Intercept 2, 3, 7 significant
+# Intercept 2, 4 significant
 # Intercept 2: DaysAWeek
-# Intercept 3: Age, DaysAWeek
-# Intercept 7: Age, DaysAWeek
+# Intercept 4: Age, DaysAWeek
+
 
 p <- get_prior(Act_PublicTransport ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
   family = categorical(),
@@ -602,7 +646,7 @@ conditional_effects(m19)
 # Intercept 4: None are significant
 
 p <- get_prior(MainResp ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
-  family = categorical(),
+  family = categorical(refcat = NA),
   data = d)
 
 p$prior[1] <- "normal(0,1)"
@@ -610,7 +654,7 @@ p$prior[c(2)] <- "student_t(3, 3, 2.5)"
 
 m20 <- brm(
   MainResp ~ 1 + Age_s + Gender + NrOfSub + Device + ActiveDev + DaysAWeek + HoursADay,
-  family = categorical(),
+  family = categorical(refcat = NA),
   prior = p,
   data = d
 )
@@ -619,7 +663,7 @@ pp_check(m20, type="bars", nsamples = 100)
 
 mcmc_areas(m20, prob = 0.5, prob_outer = 0.95, regex_pars = c("^b_A", "^b_G", "^b_D", "^bsp"))
 
-conditional_effects(m20)
+conditional_effects(m20, categorical = TRUE)
 
 # Outcome - Motivate_Notif
 # Significant Gender, negative
